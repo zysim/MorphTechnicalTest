@@ -82,7 +82,7 @@ class PostController extends Controller
     {
         return DB::table('users')
             ->join('posts', 'users.id', '=', 'posts.author_id')
-            ->select('users.name', DB::raw('count(posts.id) as posts'))
+            ->select('users.name', DB::raw('count(case when posts.deleted_at is NULL then 1 else null end) as posts'))
             ->groupBy('users.id')
             ->orderByDesc('posts')
             ->get();
