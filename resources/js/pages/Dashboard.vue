@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Paginator from '@/components/ui/paginator/Paginator.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
@@ -39,6 +39,7 @@ interface Paginated<T> {
 interface Post {
     id: number
     author: User
+    createdAt: Date
     headerImage: string
     content: string
     title: string
@@ -72,6 +73,25 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/dashboard',
     },
 ];
+
+const format = new Intl.DateTimeFormat(
+    'en-MY',
+    {
+        timeZone: 'Asia/Kuala_Lumpur',
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+    }
+)
+
+function formatDate(from: Date) {
+    return format.formatToParts(from)[0].value
+}
+
+function formatMonthAndYear(from: Date) {
+    const parts = format.formatToParts(from)
+    return `${parts[2].value} ${parts[4].value}`
+}
 </script>
 
 <template>
@@ -87,15 +107,18 @@ const breadcrumbs: BreadcrumbItem[] = [
             <h1 class="text-lg md:text-2xl font-bold">{{ isAdmin ? 'All Posts' : 'My Posts' }}</h1>
             <div v-if="isSuccess" class="grid auto-rows-min gap-4 md:grid-cols-3">
                 <Link v-for="post in data?.data || []" :key="post.id" :href="route('post', { id: post.id })">
-                    <Card class="rounded hover:shadow-lg hover:scale-105 motion-safe:transition-transform">
+                    <Card class="rounded-none shadow-lg group relative pt-0">
+                        <div class="absolute inset-0 z-10 bg-background w-fit aspect-square px-4 py-5 font-bold flex gap-2 flex-col items-center">
+                            <div class="md:text-5xl">{{ formatDate(new Date(post.createdAt)) }}</div>
+                            <div class="capitalize">{{ formatMonthAndYear(new Date(post.createdAt)) }}</div>
+                        </div>
+                        <div class="overflow-clip">
+                            <img :src="post.headerImage" class="mx-auto object-fit group-hover:scale-105 motion-safe:transition-transform"/>
+                        </div>
                         <CardHeader class="text-center">
-                            <img :src="post.headerImage" class="mx-auto object-fit"/>
                             <CardTitle class="md:text-xl">{{ post.title }}</CardTitle>
                             <CardDescription>By: {{ post.author }}</CardDescription>
                         </CardHeader>
-                        <CardContent class="overflow-ellipsis line-clamp-3">
-                            {{ post.content }}
-                        </CardContent>
                     </Card>
                 </Link>
             </div>
