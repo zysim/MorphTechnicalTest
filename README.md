@@ -8,8 +8,10 @@ Make sure you have [all the necessary tooling installed](https://laravel.com/doc
 
 1. Copy `.env.example` to `.env`
     > Add DB_* values accordingly
-1. Run `pnpm install` in a terminal
-1. Run `php artisan serve` in a terminal
+1. Run `php artisan migrate && php artisan db:seed` in a terminal
+1. Run `pnpm install`
+1. Run `php artisan serve`
+1. Run `pnpm dev` in a separate terminal instance
 
 ## To Test
 
