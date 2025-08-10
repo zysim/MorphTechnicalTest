@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PostResource;
+use App\Models\User;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -13,7 +16,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return Post::all();
+        return PostResource::collection(Post::paginate(5));
     }
 
     /**
@@ -37,7 +40,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return $post;
+        return new PostResource($post);
     }
 
     /**
@@ -62,5 +65,18 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+    }
+
+    /**
+     * Lists users and the total number of blog posts they've written.
+     */
+    public function rank()
+    {
+        return DB::table('users')
+            ->join('posts', 'users.id', '=', 'posts.author_id')
+            ->select('users.name', DB::raw('count(posts.id) as posts'))
+            ->groupBy('users.id')
+            ->orderByDesc('posts')
+            ->get();
     }
 }

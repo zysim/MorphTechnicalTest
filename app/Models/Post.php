@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Post extends Model
 {
@@ -22,5 +23,10 @@ class Post extends Model
             "updated_at" => "datetime",
             "deleted_at" => "datetime",
         ];
+    }
+
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

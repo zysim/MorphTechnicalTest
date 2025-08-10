@@ -13,7 +13,7 @@ interface User {
 interface Post {
     id: number
     author: User
-    header_image: string
+    headerImage: string
     content: string
 }
 
@@ -40,6 +40,7 @@ const breadcrumbs: BreadcrumbItem[] = [
         title: 'Dashboard',
         href: '/dashboard',
     },
+    // TODO: Add a page that lists all posts
 ];
 </script>
 
@@ -50,7 +51,7 @@ const breadcrumbs: BreadcrumbItem[] = [
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
             <div v-if="isSuccess" class="grid auto-rows-min gap-4 md:grid-cols-3">
                 <div v-for="post in data" :key="post.id">
-                    <img :src="post.header_image" />
+                    <img :src="post.headerImage" />
                     <span>By: {{ post.author }}</span>
                     <span>{{ post.content }}</span>
                 </div>

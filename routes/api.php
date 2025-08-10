@@ -11,5 +11,6 @@ Route::get('/user', function (Request $request) {
 
 Route::controller(PostController::class)->group(function () {
     Route::get('/posts', 'index');
+    Route::get('/posts/rank', 'rank');
     Route::get('/posts/{post}', 'show');
 });
