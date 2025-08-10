@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Post;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
@@ -27,7 +28,8 @@ class DatabaseSeeder extends Seeder
             Post::create([
                 'author_id' => $user->id,
                 'content' => Str::random(40),
-                'header_image' => 'https://picsum.photos/id/237/200/300',
+                'header_image' => 'https://picsum.photos/200/300',
+                'title' => 'Post' . Date::now(),
             ]);
         }
     }

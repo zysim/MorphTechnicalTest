@@ -14,7 +14,6 @@ Route::get('dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('post/{post}', function(Post $post) {
-    // return Inertia::render('Post', ['post' => $post ]);
     return Inertia::render('Post', ['post' => new PostResource($post) ]);
 })->name('post');
 
