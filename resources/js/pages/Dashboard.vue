@@ -1,11 +1,9 @@
 <script setup lang="ts">
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Paginator from '@/components/ui/paginator/Paginator.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/vue3';
-// import PlaceholderPattern from '../components/PlaceholderPattern.vue';
-import RankingsDialog from '@/components/RankingsDialog.vue';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useQuery } from '@tanstack/vue-query';
 import { useUrlSearchParams } from '@vueuse/core';
 
@@ -80,7 +78,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     <Head title="Dashboard" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <RankingsDialog :isAdmin="isAdmin" />
         <Paginator
             v-if="data?.meta.links != null"
             routeName="dashboard"

@@ -18,5 +18,12 @@ Route::get('post/{post}', function(Post $post) {
     return Inertia::render('Post', ['post' => new PostResource($post), 'isAdmin' => Auth::user()->is_admin ]);
 })->name('post');
 
+Route::get('rankings', function () {
+    if (Auth::user()->is_admin) {
+        return Inertia::render('Rankings');
+    }
+    return to_route('dashboard');
+})->middleware(['auth', 'verified'])->name('rankings');
+
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
