@@ -35,7 +35,7 @@ const links = computed<{
 			<Link v-for="link in links" :href="route(props.routeName, {
 				page: link.page
 			})">
-				<Button variant="default" :disabled="link.active">
+				<Button variant="link" :disabled="link.active">
 					<span v-html="link.label" />
 				</Button>
 			</Link>
