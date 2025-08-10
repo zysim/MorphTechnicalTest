@@ -8,15 +8,16 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Gets all blog posts from all users.
+     * Called by `/api/posts`.
      */
     public function index()
     {
-        //
+        return Post::all();
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new blog post.
      */
     public function create()
     {
@@ -24,7 +25,7 @@ class PostController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created blog post in storage.
      */
     public function store(Request $request)
     {
@@ -32,15 +33,15 @@ class PostController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified blog post.
      */
     public function show(Post $post)
     {
-        //
+        return $post;
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified blog post.
      */
     public function edit(Post $post)
     {
@@ -48,7 +49,7 @@ class PostController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified blog post in storage.
      */
     public function update(Request $request, Post $post)
     {
@@ -56,7 +57,7 @@ class PostController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified blog post from storage.
      */
     public function destroy(Post $post)
     {

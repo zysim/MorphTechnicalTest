@@ -14,3 +14,8 @@ Make sure you have [all the necessary tooling installed](https://laravel.com/doc
 ## To Test
 
 - TBD
+
+## Todos
+
+- Create [API resources](https://laravel.com/docs/master/eloquent-resources) for all models
+- Add [CSRF protection](https://laravel.com/docs/master/csrf)
