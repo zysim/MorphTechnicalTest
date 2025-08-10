@@ -18,10 +18,10 @@ class PostController extends Controller
     public function index()
     {
         if (Auth::user()->is_admin) {
-            return PostResource::collection(Post::paginate(6));
+            return PostResource::collection(Post::orderByDesc('updated_at')->paginate(6));
         };
         return PostResource::collection(
-            Post::where('author_id', '=', Auth::user()->id)->paginate(6)
+            Post::where('author_id', '=', Auth::user()->id)->orderByDesc('updated_at')->paginate(6)
         );
     }
 
