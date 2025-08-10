@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -25,9 +26,19 @@ class User extends Authenticatable
         'password',
     ];
 
+    /**
+     * Attributes that aren't mass-assignable.
+     */
     protected $guarded = [
         'role',
     ];
+
+    /**
+     * Accessors to append to model's serialised form.
+     *
+     * @var array
+     */
+    protected $appends = ['is_admin'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -37,6 +48,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'role',
     ];
 
     /**
@@ -52,6 +64,19 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Determines if the user's an admin.
+     */
+    protected function isAdmin(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->role == 'administrator'
+        );
+    }
+
+    /**
+     * Returns all posts that belong to this user.
+     */
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);

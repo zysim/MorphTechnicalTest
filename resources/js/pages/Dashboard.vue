@@ -10,6 +10,30 @@ interface User {
     name: string
 }
 
+interface Paginated<T> {
+    data: T[],
+    links: {
+        first: string | null,
+        last: string | null,
+        prev: string | null,
+        next: string | null,
+    },
+    meta: {
+        current_page: number,
+        from: number,
+        last_page: number,
+        links: {
+            label: string,
+            active: boolean,
+            url: string | null,
+        }[],
+        path: string,
+        per_page: number,
+        to: number,
+        total: number,
+    }
+}
+
 interface Post {
     id: number
     author: User
@@ -17,7 +41,7 @@ interface Post {
     content: string
 }
 
-const { isSuccess, data, isError, error } = useQuery<Post[]>({
+const { isSuccess, data, isError, error } = useQuery<Paginated<Post>>({
     queryKey: ['posts'],
     async queryFn() {
         const response = await fetch('api/posts')
@@ -35,6 +59,31 @@ const { isSuccess, data, isError, error } = useQuery<Post[]>({
     }
 })
 
+const getUserQuery = useQuery<User>({
+    queryKey: ['user'],
+    async queryFn() {
+        const response = await fetch('api/users/me')
+        if (!response.ok) {
+            let errorText = 'Unknown error'
+            try {
+                errorText = await response.text()
+            }
+            catch {
+                console.error('Error parsing response.text()')
+            }
+            throw new Error(`Failed to fetch posts: ${response.status} ${errorText}`)
+        }
+        return response.json()
+    }
+})
+
+if (getUserQuery.isSuccess) {
+    console.log('Yes:', getUserQuery.data)
+}
+else if (getUserQuery.isError) {
+    console.error('No:', getUserQuery.error)
+}
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dashboard',
@@ -50,7 +99,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
             <div v-if="isSuccess" class="grid auto-rows-min gap-4 md:grid-cols-3">
-                <div v-for="post in data" :key="post.id">
+                <div v-for="post in data?.data || []" :key="post.id">
                     <img :src="post.headerImage" />
                     <span>By: {{ post.author }}</span>
                     <span>{{ post.content }}</span>

@@ -25,6 +25,9 @@ class Post extends Model
         ];
     }
 
+    /**
+     * Returns the author of this blog post.
+     */
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class);
