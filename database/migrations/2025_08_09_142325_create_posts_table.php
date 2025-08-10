@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes('deleted_at');
             $table->text('content');
-            $table->binary('header_image')->nullable();
+            $table->string('header_image')->nullable();
             $table->foreignId('author_id')
                 ->references('id')
                 ->on('users');
