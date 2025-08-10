@@ -18,5 +18,3 @@ Make sure you have [all the necessary tooling installed](https://laravel.com/doc
 ## Todos
 
 - Build composables out of API calls
-- Create [API resources](https://laravel.com/docs/master/eloquent-resources) for all models
-- Add [CSRF protection](https://laravel.com/docs/master/csrf)
