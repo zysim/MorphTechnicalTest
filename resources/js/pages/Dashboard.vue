@@ -4,8 +4,9 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/vue3';
 // import PlaceholderPattern from '../components/PlaceholderPattern.vue';
-import { useQuery } from '@tanstack/vue-query';
+import RankingsDialog from '@/components/RankingsDialog.vue';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useQuery } from '@tanstack/vue-query';
 import { useUrlSearchParams } from '@vueuse/core';
 
 // TODO: Generate types.
@@ -79,6 +80,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     <Head title="Dashboard" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
+        <RankingsDialog :isAdmin="isAdmin" />
         <Paginator
             v-if="data?.meta.links != null"
             routeName="dashboard"
