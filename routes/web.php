@@ -7,7 +7,10 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome');
+    if (Auth::user() == null) {
+        return to_route('login');
+    }
+    return to_route('dashboard');
 })->name('home');
 
 Route::get('dashboard', function () {
