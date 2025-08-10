@@ -16,5 +16,6 @@ Route::middleware('web')->group(function () {
         Route::get('/posts', 'index');
         Route::get('/posts/rank', 'rank');
         Route::get('/posts/{post}', 'show');
+        Route::delete('/posts/{post}', 'destroy');
     });
 });

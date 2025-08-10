@@ -15,7 +15,7 @@ Route::get('dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('post/{post}', function(Post $post) {
-    return Inertia::render('Post', ['post' => new PostResource($post) ]);
+    return Inertia::render('Post', ['post' => new PostResource($post), 'isAdmin' => Auth::user()->is_admin ]);
 })->name('post');
 
 require __DIR__.'/settings.php';

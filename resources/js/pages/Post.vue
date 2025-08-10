@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import DeletePostDialog from '@/components/DeletePostDialog.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
-// import PlaceholderPattern from '../components/PlaceholderPattern.vue';
 
 // TODO: Generate types.
 interface Post {
@@ -14,10 +14,11 @@ interface Post {
     title: string
 }
 
-const { post } = defineProps<{
+const { post, isAdmin } = defineProps<{
 	post: {
         data: Post
-    }
+    },
+    isAdmin: boolean
 }>()
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -33,9 +34,10 @@ const breadcrumbs: BreadcrumbItem[] = [
 </script>
 
 <template>
-    <Head title="Post" />
+    <Head :title="post.data.title" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
+        <DeletePostDialog :is-admin="isAdmin" :post-id="post.data.id" />
         <div class="flex h-full flex-col gap-4 rounded-xl p-4 overflow-x-auto">
             <div class="w-full h-[300px] bg-background">
                 <img class="h-fit object-none" :src="post.data.headerImage" alt="Blog post header image" />
