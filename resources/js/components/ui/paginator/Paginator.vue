@@ -1,138 +1,43 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { Link } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
 const props = defineProps<{
-	total: number
-	limit: number
-	page: number
+	routeName: string,
+	links: {
+		label: string,
+		active: boolean,
+		url: string | null,
+	}[]
 }>()
 
-const limits = [25, 50, 100]
-	.filter((l) => l < props.limit)
-	.concat(props.limit, ...[25, 50, 100].filter((l) => l > props.limit))
+const links = computed<{
+	label: string,
+	active: boolean,
+	page: number
+}[]>(() => (
+	props.links.filter(link => link.url !== null)
+	.map(link => {
+		const url = new URL(link.url!)
+		return {
+			...link,
+			page: parseInt(url.searchParams.get('page')!, 10)
+		}
+	})
+))
 
-const limit = ref(props.limit)
-
-const totalPages = computed(() => Math.ceil(props.total / props.limit))
-
-function updateLimits() {
-	const search = new URLSearchParams(location.search)
-	search.set('resultsPerPage', limit.value.toString(10))
-	location.search = search.toString()
-}
 </script>
 
 <template>
 	<div class="container">
-		<form class="pageSelectorContainer">
-			<input type="hidden" name="resultsPerPage" :value="props.limit" />
-			<label for="goToPage">Go to page:</label>
-			<input
-				id="goToPage"
-				name="page"
-				class="goToPage"
-				type="number"
-				min="1"
-				:max="totalPages"
-			/>
-			<button class="button">Go</button>
-		</form>
 		<div class="pageContainer">
-			<a
-				v-if="props.page > 1"
-				:href="`?resultsPerPage=${props.limit}&page=${props.page - 1}`"
-				tabindex="-1"
-			>
-				<button class="button">&laquo; Prev</button>
-			</a>
-			<template v-if="totalPages <= 7">
-				<a
-					v-for="page in totalPages"
-					:href="`?resultsPerPage=${props.limit}&page=${page}`"
-					tabindex="-1"
-				>
-					<button class="button" :disabled="props.page === page">
-						{{ page }}
-					</button>
-				</a>
-			</template>
-			<template v-else-if="props.page <= 6">
-				<a
-					v-for="i in 6"
-					:href="`?resultsPerPage=${props.limit}&page=${i}`"
-					tabindex="-1"
-				>
-					<button class="button" :disabled="i === props.page">{{ i }}</button>
-				</a>
-				<a
-					:href="`?resultsPerPage=${props.limit}&page=${totalPages}`"
-					tabindex="-1"
-				>
-					<button class="button">{{ totalPages }}</button>
-				</a>
-			</template>
-			<template v-else-if="props.page >= totalPages - 5">
-				<a :href="`?resultsPerPage=${props.limit}&page=1`" tabindex="-1">
-					<button class="button">1</button>
-				</a>
-				<a
-					v-for="i in 6"
-					:href="`?resultsPerPage=${props.limit}&page=${totalPages - 6 + i}`"
-					tabindex="-1"
-				>
-					<button class="button" :disabled="props.page === totalPages - 6 + i">
-						{{ totalPages - 6 + i }}
-					</button>
-				</a>
-			</template>
-			<template v-else>
-				<a :href="`?resultsPerPage=${props.limit}&page=1`" tabindex="-1">
-					<button class="button">1</button>
-				</a>
-				<a
-					v-for="i in 5"
-					:href="`?resultsPerPage=${props.limit}&page=${props.page + i - 3}`"
-					tabindex="-1"
-				>
-					<button class="button" :disabled="i === 3">
-						{{ props.page + i - 3 }}
-					</button>
-				</a>
-				<a
-					:href="`?resultsPerPage=${props.limit}&page${totalPages}`"
-					tabindex="-1"
-				>
-					<button class="button">
-						{{ totalPages }}
-					</button>
-				</a>
-			</template>
-			<a
-				v-if="props.page < totalPages"
-				:href="`?resultsPerPage=${props.limit}&page=${props.page + 1}`"
-				tabindex="-1"
-			>
-				<button class="button">Next &raquo;</button>
-			</a>
-		</div>
-		<div class="resultsPerPageContainer">
-			<label for="resultsPerPage">Show</label>
-			<select
-				v-model="limit"
-				id="resultsPerPage"
-				name="resultsPerPage"
-				class="resultsPerPage"
-				@change="updateLimits"
-			>
-				<option
-					v-for="limit in limits"
-					:value="limit"
-					:selected="props.limit === limit"
-				>
-					{{ limit }}
-				</option>
-			</select>
-			<span>per page</span>
+			<Link v-for="link in links" :href="route(props.routeName, {
+				page: link.page
+			})">
+				<button class="button">
+					<span v-html="link.label" />
+				</button>
+			</Link>
 		</div>
 	</div>
 </template>

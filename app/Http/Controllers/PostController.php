@@ -6,6 +6,7 @@ use App\Http\Resources\PostResource;
 use App\Models\User;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
@@ -16,7 +17,12 @@ class PostController extends Controller
      */
     public function index()
     {
-        return PostResource::collection(Post::paginate(5));
+        if (Auth::user()->is_admin) {
+            return PostResource::collection(Post::paginate(6));
+        };
+        return PostResource::collection(
+            Post::where('author_id', '=', Auth::user()->id)->paginate(6)
+        );
     }
 
     /**
