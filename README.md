@@ -13,7 +13,7 @@ Make sure you have [all the necessary tooling installed](https://laravel.com/doc
 
 ## To Test
 
-- TBD
+- `php artisan test`
 
 ## Todos
 
