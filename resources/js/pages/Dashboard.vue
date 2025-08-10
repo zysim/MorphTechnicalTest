@@ -5,6 +5,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/vue3';
 // import PlaceholderPattern from '../components/PlaceholderPattern.vue';
 import { useQuery } from '@tanstack/vue-query';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useUrlSearchParams } from '@vueuse/core';
 
 // TODO: Generate types.
@@ -41,6 +42,7 @@ interface Post {
     author: User
     headerImage: string
     content: string
+    title: string
 }
 
 const { isAdmin } = defineProps<{ isAdmin: boolean }>()
@@ -87,11 +89,16 @@ const breadcrumbs: BreadcrumbItem[] = [
             <h1 class="text-lg md:text-2xl font-bold">{{ isAdmin ? 'All Posts' : 'My Posts' }}</h1>
             <div v-if="isSuccess" class="grid auto-rows-min gap-4 md:grid-cols-3">
                 <Link v-for="post in data?.data || []" :key="post.id" :href="route('post', { id: post.id })">
-                    <div class="p-2 border border-sidebar-border rounded hover:shadow-lg hover:scale-105 motion-safe:transition-transform">
-                        <img :src="post.headerImage" />
-                        <div>By: {{ post.author }}</div>
-                        <div class="overflow-ellipsis line-clamp-3">{{ post.content }}</div>
-                    </div>
+                    <Card class="rounded hover:shadow-lg hover:scale-105 motion-safe:transition-transform">
+                        <CardHeader class="text-center">
+                            <img :src="post.headerImage" class="mx-auto object-fit"/>
+                            <CardTitle class="md:text-xl">{{ post.title }}</CardTitle>
+                            <CardDescription>By: {{ post.author }}</CardDescription>
+                        </CardHeader>
+                        <CardContent class="overflow-ellipsis line-clamp-3">
+                            {{ post.content }}
+                        </CardContent>
+                    </Card>
                 </Link>
             </div>
             <div v-else-if="isError">

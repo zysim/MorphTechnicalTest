@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
+import { Button } from '../button';
 
 const props = defineProps<{
 	routeName: string,
@@ -34,9 +35,9 @@ const links = computed<{
 			<Link v-for="link in links" :href="route(props.routeName, {
 				page: link.page
 			})">
-				<button class="button">
+				<Button variant="default" :disabled="link.active">
 					<span v-html="link.label" />
-				</button>
+				</Button>
 			</Link>
 		</div>
 	</div>
@@ -49,33 +50,11 @@ const links = computed<{
 	align-items: flex-end;
 }
 
-.pageSelectorContainer {
-	display: flex;
-	flex-direction: row;
-	gap: 1rem;
-	justify-content: space-between;
-	align-items: center;
-}
-
 .pageContainer {
 	display: flex;
 	flex-direction: row;
 	gap: 0.4rem;
 	justify-content: space-between;
 	align-items: center;
-}
-
-.goToPage {
-	padding: 0.5rem 0.2rem;
-}
-
-.resultsPerPageContainer {
-	display: flex;
-	align-items: center;
-	gap: 0.6rem;
-}
-
-.resultsPerPage {
-	padding: 0.5rem 0.2rem;
 }
 </style>
