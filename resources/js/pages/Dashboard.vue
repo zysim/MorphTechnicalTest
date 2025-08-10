@@ -72,7 +72,6 @@ const breadcrumbs: BreadcrumbItem[] = [
         title: 'Dashboard',
         href: '/dashboard',
     },
-    // TODO: Add a page that lists all posts
 ];
 </script>
 
