@@ -2,6 +2,7 @@
 
 use App\Http\Resources\PostResource;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -10,7 +11,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Dashboard', ['isAdmin' => Auth::user()->is_admin]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('post/{post}', function(Post $post) {

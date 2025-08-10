@@ -43,6 +43,8 @@ interface Post {
     content: string
 }
 
+const { isAdmin } = defineProps<{ isAdmin: boolean }>()
+
 const params = useUrlSearchParams<Partial<{ page: number }>>('history')
 
 const { isSuccess, data, isError, error } = useQuery<Paginated<Post>>({
@@ -82,24 +84,19 @@ const breadcrumbs: BreadcrumbItem[] = [
             :links="data?.meta.links"
         />
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
+            <h1 class="text-lg md:text-2xl font-bold">{{ isAdmin ? 'All Posts' : 'My Posts' }}</h1>
             <div v-if="isSuccess" class="grid auto-rows-min gap-4 md:grid-cols-3">
                 <Link v-for="post in data?.data || []" :key="post.id" :href="route('post', { id: post.id })">
-                    <div class="p-2 border border-gray-300 rounded hover:shadow-lg hover:scale-105 motion-safe:transition-transform">
+                    <div class="p-2 border border-sidebar-border rounded hover:shadow-lg hover:scale-105 motion-safe:transition-transform">
                         <img :src="post.headerImage" />
                         <div>By: {{ post.author }}</div>
                         <div class="overflow-ellipsis line-clamp-3">{{ post.content }}</div>
                     </div>
                 </Link>
-                <!--div v-for="i in [1,2,3]" :key="i" class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                <PlaceholderPattern />
-                </div-->
             </div>
             <div v-else-if="isError">
                 <div>{{ error }}</div>
             </div>
-            <!--div class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-            <PlaceholderPattern />
-            </div-->
         </div>
         <Paginator
             v-if="data?.meta.links != null"
