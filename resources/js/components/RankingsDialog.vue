@@ -10,8 +10,9 @@ import {
     DialogTrigger
 } from '@/components/ui/dialog';
 import { useQuery } from '@tanstack/vue-query';
+import Icon from './Icon.vue';
 import Button from './ui/button/Button.vue';
-import {Skeleton} from './ui/skeleton';
+import { Skeleton } from './ui/skeleton';
 
 const props = defineProps<{
   isAdmin: boolean
@@ -43,6 +44,9 @@ const { refetch, isLoading, isSuccess, data, isError, error } = useQuery<{
             <DialogTitle>Post Count Rankings</DialogTitle>
             <DialogDescription>
                 This shows a list of users with a total count of posts they've made.
+                <Button variant="outline" @click="refetch" :disabled="isLoading">
+                    <Icon name="refreshCcw"/>
+                </Button>
             </DialogDescription>
         </DialogHeader>
         <Skeleton v-if="isLoading" class="h-[200px] w-full" />
