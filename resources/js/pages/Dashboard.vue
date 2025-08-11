@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import RankingsDialog from '@/components/RankingsDialog.vue';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Paginator from '@/components/ui/paginator/Paginator.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
@@ -98,6 +99,7 @@ function formatMonthAndYear(from: Date) {
     <Head title="Dashboard" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
+        <RankingsDialog :isAdmin="isAdmin" />
         <Paginator
             v-if="data?.meta.links != null"
             routeName="dashboard"
