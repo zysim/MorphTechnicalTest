@@ -1,6 +1,7 @@
 <!-- Shows a table of all users and their total post count. -->
 
 <script setup lang="ts">
+import { rank } from '@/actions/App/Http/Controllers/PostController';
 import {
     Dialog,
     DialogContent,
@@ -24,7 +25,7 @@ const { refetch, isLoading, isSuccess, data, isError, error } = useQuery<{
 }[]>({
     queryKey: ['rankings'],
     async queryFn() {
-        const response = await fetch('/api/posts/rank')
+        const response = await fetch(rank.url())
         if (!response.ok) {
             throw new Error(`Failed to fetch rankings: ${response.status}`)
         }
