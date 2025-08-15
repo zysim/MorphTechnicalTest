@@ -18,13 +18,13 @@ const links = computed<{
 	page: number
 }[]>(() => (
 	props.links.filter(link => link.url !== null)
-	.map(link => {
-		const url = new URL(link.url!)
-		return {
-			...link,
-			page: parseInt(url.searchParams.get('page')!, 10)
-		}
-	})
+		.map(link => {
+			const url = new URL(link.url!)
+			return {
+				...link,
+				page: parseInt(url.searchParams.get('page')!, 10)
+			}
+		})
 ))
 
 </script>
@@ -32,12 +32,11 @@ const links = computed<{
 <template>
 	<div class="container">
 		<div class="pageContainer">
-			<Link v-for="link in links" :href="route(props.routeName, {
-				page: link.page
-			})">
-				<Button variant="link" :disabled="link.active">
-					<span v-html="link.label" />
-				</Button>
+			<Link v-for="link in links" :href="route(props.routeName, { page: link.page })"
+				:class="link.active ? 'cursor-not-allowed' : ''">
+			<Button variant="link" :disabled="link.active">
+				<span v-html="link.label" />
+			</Button>
 			</Link>
 		</div>
 	</div>

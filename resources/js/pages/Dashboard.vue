@@ -114,8 +114,8 @@ function formatMonthAndYear(from: Date) {
                             <div class="md:text-5xl">{{ formatDate(new Date(post.createdAt)) }}</div>
                             <div class="capitalize">{{ formatMonthAndYear(new Date(post.createdAt)) }}</div>
                         </div>
-                        <div class="overflow-clip">
-                            <img :src="post.headerImage" class="mx-auto object-fit group-hover:scale-105 motion-safe:transition-transform"/>
+                        <div class="overflow-clip aspect-video bg-accent">
+                            <img :src="post.headerImage" class="mx-auto group-hover:scale-105 motion-safe:transition-transform"/>
                         </div>
                         <CardHeader class="text-center">
                             <CardTitle class="md:text-xl">{{ post.title }}</CardTitle>

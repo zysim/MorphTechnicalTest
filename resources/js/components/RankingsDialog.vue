@@ -36,7 +36,7 @@ const { refetch, isLoading, isSuccess, data, isError, error } = useQuery<{
 
 <template>
   <Dialog v-if="props.isAdmin">
-    <DialogTrigger class="ml-4 self-start">
+    <DialogTrigger class="ml-4 mt-4 self-start">
         <Button variant="default" @click="refetch">Post Count Rankings</Button>
     </DialogTrigger>
     <DialogContent>
